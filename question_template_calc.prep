@@ -1,0 +1,8 @@
+{{def(q, formula, q_var)}}
+<p>{{q}}</p>
+<p>Given Formula: {{formula}}</p>
+<p>Calculate: {{q_var}}</p>
+<p>
+    <table width="200" height="80""><tr><td >
+    </td></tr></table>
+</p>

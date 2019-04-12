@@ -1,0 +1,7 @@
+{{def(q, answer_list)}}
+<p>{{q}}</p>
+<p>
+    <ol>
+        {{for q in answer_list}} <li>{{q}}</li> {{endfor}}
+    </ol>
+</p>

@@ -1,0 +1,19 @@
+Question file is a Quoted CSV file.
+Col 1: Question Type: input | multi | box | calc
+Col 2: Question Text (Text to show in question area)
+Col 3: Memorandum Answer field.
+Col 4 and after depends on the Type (Col 1)
+ - input:  Col 4 is ignored
+ - multi:  Multiple choice answers are listed one per column.
+ - box: Col 4 = Width (px or 100%)
+        Col 5 - Height (px)
+       Example:  400px, 300px
+ - calc: Col 4: Variable Name
+             5: Variable Type int|float
+             6: Minimum
+             7: Maximum
+        Repeat for each variable (col 8-11, col 12-15, etc)
+       Example:
+          A, int, 0, 10
+          B, float, 0.5, 0.999
+

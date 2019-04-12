@@ -1,0 +1,5 @@
+{{def(q, w, h)}}
+<p>{{q}}</p>
+<p>
+<div style="width:{{w}};height:{{h}};border:1px solid #000;"></div>
+</p>

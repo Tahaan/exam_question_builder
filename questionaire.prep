@@ -1,0 +1,41 @@
+{{def(title, question_list)}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <style>
+        p, tr, td,  {
+        page-break-inside: inherit;
+        }
+
+    table {
+        border: 1px solid black;
+        page-break-inside: inherit;
+        }
+    </style>
+
+    <style type="text/css"  media="print">
+
+    .keeptogether {
+        page-break-inside: avoid;
+        display: inline-block;
+        width: 100%;
+        }
+
+    p, tr, td,  {
+        page-break-inside: inherit;
+        }
+
+    table {
+        border: 1px solid black;
+        page-break-inside: inherit;
+        }
+    </style>
+
+
+</head>
+<body>
+{{for n, i in enumerate(question_list)}} <div class="keeptogether"> QUESTION {{n+1}}<br>{{i}}<hr></div> {{endfor}}
+</body>
+</html>
