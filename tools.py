@@ -11,19 +11,23 @@ def parse_question_fields(question_row) -> dict:
     q_type = question_row[0]
     q_text = question_row[1]
     ans = question_row[2]
+    points = question_row[3]
     if q_type == 'entry':
         q = {'q': q_text,
-             'type': q_type}
+             'type': q_type,
+             'points': points}
     elif q_type == 'multi':
         q = {'q': q_text,
              'type': q_type,
-             'answer_list': question_row[3:]
+             'points': points,
+             'answer_list': question_row[4:]
              }
     elif q_type == 'box':
         q = {'q': q_text,
              'type': q_type,
-             'w': question_row[3],
-             'h': question_row[4]
+             'points': points,
+             'w': question_row[4],
+             'h': question_row[5]
              }
     elif q_type == 'calc':
 
@@ -31,8 +35,9 @@ def parse_question_fields(question_row) -> dict:
 
         q = {'q': q_text,
              'type': q_type,
+             'points': points,
              'formula': question_row[1],
-             'q_var': question_row[3],
+             'q_var': question_row[4],
              }
     else:
         raise ValueError('Unknown question type %s' % q_type)
