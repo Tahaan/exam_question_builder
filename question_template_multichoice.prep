@@ -1,5 +1,6 @@
-{{def(q, answer_list)}}
+{{def(q, points, answer_list)}}
 <p>{{q}}</p>
+<p>Points: {{points}}</p>
 <p>
     <ol>
         {{for q in answer_list}} <li>{{q}}</li> {{endfor}}

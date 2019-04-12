@@ -1,5 +1,6 @@
-{{def(q, formula, q_var)}}
+{{def(q, points, formula, q_var)}}
 <p>{{q}}</p>
+<p>Points: {{points}}</p>
 <p>Given Formula: {{formula}}</p>
 <p>Calculate: {{q_var}}</p>
 <p>
