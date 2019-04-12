@@ -7,6 +7,7 @@ LINUX:
    pip install -r requirements.txt
 
 WINDOWS:
+   pip install virtualenv
    mkvirtualenv env
    \env\Scripts\activate.bat
    pip install -r requirements.txt
