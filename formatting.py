@@ -31,7 +31,7 @@ class TextItemFormatter(QuestionFormatter):
     templatefile = 'question_template_text.prep'
 
     def __init__(self, **kwargs):
-        super().__init__(q=kwargs.get('q'))
+        super().__init__(q=kwargs.get('q'), points=kwargs.get('points'))
 
 
 # A formatter that will draw a box
@@ -39,7 +39,7 @@ class BoxFormatter(QuestionFormatter):
     templatefile = 'question_template_box.prep'
 
     def __init__(self, **kwargs):
-        super().__init__(q=kwargs.get('q'), w=kwargs.get('w'), h=kwargs.get('h'))
+        super().__init__(q=kwargs.get('q'), w=kwargs.get('w'), h=kwargs.get('h'), points=kwargs.get('points'))
 
 
 # An INCOMPLETE formatter that will make up a calculation question....
