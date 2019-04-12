@@ -1,7 +1,7 @@
 "entry","Enter your name","?","0"
 "entry","Enter your Student ID","?","0"
 "entry","What is the name of the Foo","Fiz Ban","1"
-"multi","In which year was the computer invented","2","1833","1990","2000","1234","None of the above"
+"multi","In which year was the computer invented","1833","2","1990","2000","1234","None of the above"
 "box","Draw something","?","5","300px","500px"
 "box","Draw a small thing","?","5","200px","200px"
 "box","Draw a big thing","?","1","100%","600px"
