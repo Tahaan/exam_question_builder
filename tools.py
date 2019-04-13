@@ -95,3 +95,27 @@ def get_items(n=0) -> list:
     selected_question_nrs = pick_n_from_list(n, len(questions), sorted=True)
     print(selected_question_nrs)
     return [parse_question_fields(questions[i]) for i in selected_question_nrs]
+
+
+def prompt_questionaire_data() -> dict:
+    nr_of_questions = int(input('How many questions: '))
+    title = input('Enter Exam Title: ')
+    time = input('Time Allowed: ')
+
+    print('Type Instructions.  End with a single fullstop on the last line')
+    instr_list = []
+    while True:
+        instr_line = input()
+        instr_line = instr_line.strip()
+        if instr_line == '.':
+            break
+        instr_list.append(instr_line)
+    instr ='<br>\n'.join(instr_list)
+
+    return {"time": time,
+            "instr": instr,
+            "total_points": 0,
+            "question_list": [],
+            "title": title,
+            "nr_of_questions": nr_of_questions
+            }
