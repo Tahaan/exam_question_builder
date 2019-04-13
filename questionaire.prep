@@ -1,4 +1,4 @@
-{{def(title, question_list)}}
+{{def(title, total_points, instr, time, question_list)}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,6 +36,16 @@
 
 </head>
 <body>
+<div class="keeptogether">
+<table>
+<tr width="100%"><td width="60%"></td><td>Points</td><td>{{total_points}}</td></tr>
+<tr><td></td><td>Time</td><td>{{time}}</td></tr>
+<tr><td colspan="3">
+<h2>Instructions</h2>
+{{instr}}</td></tr>
+</table>
+</div>
+<hr>
 {{for n, i in enumerate(question_list)}} <div class="keeptogether"> QUESTION {{n+1}}<br>{{i}}<hr></div> {{endfor}}
 </body>
 </html>
