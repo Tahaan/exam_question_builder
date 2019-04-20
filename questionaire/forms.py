@@ -96,4 +96,4 @@ class QuestionForm(FlaskForm):
     memo = StringField('Memo', validators=[DataRequired()], default="?")
     answer = StringField('Answer', validators=[DataRequired(), Length(min=2, max=200)],
                     default="?")
-    submit = SubmitField('Add')
+    submit = SubmitField('Save')

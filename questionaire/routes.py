@@ -193,7 +193,7 @@ def update_question(question_id):
         question.subject = form.subject.data
 
         db.session.commit()
-        flash('Your account has been updated', 'success')
+        flash('Question updated', 'success')
         return redirect(url_for('questions'))
     elif request.method == 'GET':
         form.q.data = question.q
