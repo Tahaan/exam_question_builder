@@ -2,3 +2,5 @@
 env/
 *html
 .idea
+site.db
+questionaire/static/profile_pics/

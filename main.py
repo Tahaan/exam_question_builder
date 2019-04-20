@@ -5,15 +5,12 @@ formatted_item_list = []
 output_file = 'questionare.html'
 total_points = 0
 
-
 # Step 1: Get user inputs
 qdata = prompt_questionaire_data()
 nr_of_questions = qdata.pop('nr_of_questions')
 
-
 # Step 2: Get a random list of questions.
 items = get_items(nr_of_questions)
-
 
 # Step 3: Turn each question into a properly formatted HTML snippet
 for n, i in enumerate(items):
@@ -29,7 +26,6 @@ for n, i in enumerate(items):
         formatted_item_list.append(str(CalcFormatter(**i)))
     else:
         raise ValueError("Don't know how to format item %s (type = %s)" % (n, i['type']))
-
 
 # Step 4: Combine all of the snippets into a single HTML questionaire.
 qdata.update({"question_list": formatted_item_list,
