@@ -206,3 +206,11 @@ def update_question(question_id):
     return render_template('create_question.html', title="Update Question", form=form, legend="Update Question")
 
 
+@app.route("/questions/<int:question_id>/delete", methods=['POST'])
+@login_required
+def delete_question(question_id):
+    question = Question.query.get_or_404(question_id)
+    db.session.delete(question)
+    db.session.commit()
+    flash('Question deleted', 'success')
+    return redirect(url_for('questions'))
