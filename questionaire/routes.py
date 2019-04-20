@@ -5,7 +5,7 @@ from PIL import Image
 
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import redirect
-from flask import render_template, url_for, flash, request
+from flask import render_template, url_for, flash, request, abort
 
 from questionaire import app, bcrypt, db
 from questionaire.forms import RegistrationForm, LoginForm, QuestionaireForm, UpdateAccountForm, QuestionForm
@@ -133,11 +133,17 @@ def account():
 @login_required
 def questions():
     questions = Question.query.all()
-    question_list = [{'q': i.q, 'points': i.points, 'a': i.answer, 'type': i.type, 'memo': i.memo} for i in questions]
+    question_list = [{'q': i.q, 'points': i.points, 'a': i.answer, 'type': i.type, 'memo': i.memo, 'id': i.id} for i in questions]
 
     for n, q in enumerate(question_list):
         q.update({'nr': n+1})
     return render_template('questions.html', questions=question_list)
+
+
+@app.route("/questions/<int:question_id>")
+def question(question_id):
+    question = Question.query.get_or_404(question_id)
+    return render_template('question.html', question=question, title="Question " + str(question.id))
 
 
 @app.route("/questionaire", methods=['GET', 'POST'])
@@ -161,11 +167,42 @@ def new_question():
                             points=form.points.data,
                             memo=form.memo.data,
                             type=form.type.data,
-                            answer=form.type.data,
+                            answer=form.answer.data,
                             subject=form.subject.data)
         db.session.add(question)
         db.session.commit()
         return redirect(url_for('home'))
     elif request.method == 'POST':
         flash('Check Values', 'danger')
-    return render_template('create_question.html', title="Add Question", form=form)
+    return render_template('create_question.html', title="Add Question", form=form, legend="New Question")
+
+
+@app.route("/questions/<int:question_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_question(question_id):
+    question = Question.query.get_or_404(question_id)
+    # if question.author != current_user:
+    #     abort(403)
+    form = QuestionForm()
+    if form.validate_on_submit():
+        question.answer = form.answer.data
+        question.memo = form.memo.data
+        question.q = form.q.data
+        question.points = form.points.data
+        question.type = form.type.data
+        question.subject = form.subject.data
+
+        db.session.commit()
+        flash('Your account has been updated', 'success')
+        return redirect(url_for('questions'))
+    elif request.method == 'GET':
+        form.q.data = question.q
+        form.points.data = question.points
+        form.type.data = question.type
+        form.memo.data = question.memo
+        form.subject.data = question.subject
+        form.answer.data = question.answer
+
+    return render_template('create_question.html', title="Update Question", form=form, legend="Update Question")
+
+
