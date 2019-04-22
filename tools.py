@@ -4,7 +4,28 @@
 
 # As an example we just have 3 hard-coded questions for now.
 import csv
+import json
 from random import randint
+
+
+DEFAULT_CONFIG_FILE = 'webservice.conf'
+
+
+# Singleton Class holding application config
+class Config:
+    _conf = {}
+
+    def __init__(self, filename):
+        Config._conf = self.read_config(filename)
+
+    @classmethod
+    def read_config(cls, filename):
+        with open(filename, 'rt') as configfile:
+            return json.loads(configfile.read())
+
+    @classmethod
+    def get(cls, key, default=None):
+        return cls._conf.get(key, default)
 
 
 def parse_question_fields(question_row) -> dict:
