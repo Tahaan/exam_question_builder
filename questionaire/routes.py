@@ -141,11 +141,7 @@ def account():
     return render_template('account.html', image_file=image_file, form=form)
 
 
-@app.route("/questions")
-@login_required
-def questions():
-    pg = request.args.get('page', 1, type=int)
-    question_page = Question.query.paginate(per_page=2, page=pg)
+def show_questionlist(question_page, pg, subj=None):
     question_list = [{'q': i.q,
                       'points': i.points,
                       'answer': i.answer,
@@ -153,6 +149,7 @@ def questions():
                       'memo': i.memo,
                       'id': i.id,
                       'subject': subject_name(i.subject),
+                      'subj_id': i.subject,
                       'nr': n+1+(pg-1)*question_page.per_page} for n, i in enumerate(question_page.items)]
 
     return render_template('questions.html',
@@ -161,8 +158,27 @@ def questions():
                                                           right_edge=1,
                                                           left_current=2,
                                                           right_current=3),
-                           current_pagenr=pg
+                           current_pagenr=pg,
+                           subj=subj
                            )
+
+
+@app.route("/subject/<subj>")
+@login_required
+def subj_questions(subj):
+    pg = request.args.get('page', 1, type=int)
+
+    question_page = Question.query.filter_by(subject=subj).order_by(Question.id.desc()).\
+        paginate(per_page=5, page=pg)
+    return show_questionlist(question_page, pg, subj)
+
+
+@app.route("/questions")
+@login_required
+def questions():
+    pg = request.args.get('page', 1, type=int)
+    question_page = Question.query.order_by(Question.subject.desc()).paginate(per_page=5, page=pg)
+    return show_questionlist(question_page, pg)
 
 
 @app.route("/questions/<int:question_id>")
