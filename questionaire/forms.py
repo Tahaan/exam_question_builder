@@ -114,3 +114,22 @@ class QuestionForm(FlaskForm):
     answer = StringField('Answer', validators=[Length(max=200)])
     optionlist = FieldList(StringField('Option', validators=[DataRequired(), Length(max=200)]))
     submit = SubmitField('Save')
+
+
+class RequestResetForm(FlaskForm):
+    submit = SubmitField('Request Password Reset')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('Email address not found, Register first')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()],
+                             description="New password")
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')],
+                                     description="Enter password again")
+
+    submit = SubmitField('Reset')

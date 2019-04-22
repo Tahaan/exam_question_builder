@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from questionaire import db, loginmanager
+from questionaire import db, loginmanager, app
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as TimedToken
 
 
 @loginmanager.user_loader
@@ -20,6 +21,20 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return 'User("{username}", "{email}", "{img}")'.format(
             username=self.username, email=self.email, img=self.image_file)
+
+    def get_reset_token(self, expires_seconds=1800):
+        # s = TimedToken(app.secret_key, expires_seconds)
+        s = TimedToken(app.config['SECRET_KEY'], expires_seconds)
+        return s.dumps({'user_id': self.id}).decode('UTF-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = TimedToken
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
 
 
 class Post(db.Model):
