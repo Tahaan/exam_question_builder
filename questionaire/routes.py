@@ -1,3 +1,4 @@
+import json
 import os
 import uuid
 
@@ -29,6 +30,7 @@ def maintenance():
 
 @app.route("/maintenance/clearall")
 def wipe_database():
+    db.drop_all()
     flash('Database Destroyed - add a new user now', 'danger')
     return redirect(url_for('maintenance'))
 
@@ -108,6 +110,15 @@ def save_picture(form_picture):
     return picture_fn
 
 
+def parse_question_options(optionlist_data, boxw, boxh):
+    return json.dumps({
+        'mcoptions': [str(i) for i in optionlist_data],
+        'mc_debug_type': str(type(optionlist_data)),
+        'mc_debug_raw': str(optionlist_data),
+        'boxw': str(boxw),
+        'boxh': str(boxh)
+    })
+
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
@@ -132,11 +143,12 @@ def account():
 @app.route("/questions")
 @login_required
 def questions():
-    questions = Question.query.all()
-    question_list = [{'q': i.q, 'points': i.points, 'a': i.answer, 'type': i.type, 'memo': i.memo, 'id': i.id} for i in questions]
+    pg = request.args.get('page', 1, type=int)
+    question_page = Question.query.paginate(per_page=5, page=pg)
+    question_list = [{'q': i.q, 'points': i.points, 'a': i.answer, 'type': i.type, 'memo': i.memo, 'id': i.id} for i in question_page.items]
 
     for n, q in enumerate(question_list):
-        q.update({'nr': n+1})
+        q.update({'nr': n+1+((pg-1)*question_page.per_page)})
     return render_template('questions.html', questions=question_list)
 
 
@@ -163,11 +175,12 @@ def new_question():
     form = QuestionForm()
     if form.validate_on_submit():
         flash('Your question has been added', 'success')
+        question_info = parse_question_options(form.optionlist.data, form.boxh.data, form.boxw.data)
         question = Question(q=form.q.data,
                             points=form.points.data,
                             memo=form.memo.data,
                             type=form.type.data,
-                            answer=form.answer.data,
+                            answer=question_info,
                             subject=form.subject.data)
         db.session.add(question)
         db.session.commit()
@@ -185,7 +198,7 @@ def update_question(question_id):
     #     abort(403)
     form = QuestionForm()
     if form.validate_on_submit():
-        question.answer = form.answer.data
+        question.answer = parse_question_options(form.optionlist.data, form.boxh.data, form.boxw.data)
         question.memo = form.memo.data
         question.q = form.q.data
         question.points = form.points.data

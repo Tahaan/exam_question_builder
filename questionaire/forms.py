@@ -1,8 +1,9 @@
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, TextAreaField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, TextAreaField, SelectField, \
+    FieldList, DecimalField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 
 from questionaire.models import User
 
@@ -86,14 +87,16 @@ class QuestionaireForm(FlaskForm):
 
 
 class QuestionForm(FlaskForm):
-    q = StringField('Question', validators=[DataRequired(), Length(min=2, max=200)],
-                    default="? ? ?")
+    q = TextAreaField('Question', validators=[DataRequired(), Length(max=200)], default="")
     subject = SelectField('Subject', validators=[DataRequired()],
                           choices=SUBJECT_LIST)
     type = SelectField('Type', validators=[DataRequired()],
                        choices=TYPE_LIST)
     points = IntegerField('Points', validators=[], default=1)
-    memo = StringField('Memo', validators=[DataRequired()], default="?")
-    answer = StringField('Answer', validators=[DataRequired(), Length(min=2, max=200)],
-                    default="?")
+    boxw = IntegerField('Box Width', validators=[], default=500)
+    boxh = IntegerField('Box Height', validators=[], default=500)
+    memo = TextAreaField('Memo', validators=[DataRequired()], default="")
+    numeric = DecimalField('Value', validators=[Optional()])
+    answer = StringField('Answer', validators=[Length(max=200)])
+    optionlist = FieldList(StringField('Option', validators=[DataRequired(), Length(max=200)]))
     submit = SubmitField('Save')
