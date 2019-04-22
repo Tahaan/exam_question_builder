@@ -6,10 +6,11 @@ from PIL import Image
 
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import redirect
-from flask import render_template, url_for, flash, request, abort
+from flask import render_template, url_for, flash, request
 
 from questionaire import app, bcrypt, db
-from questionaire.forms import RegistrationForm, LoginForm, QuestionaireForm, UpdateAccountForm, QuestionForm
+from questionaire.forms import RegistrationForm, LoginForm, QuestionaireForm, UpdateAccountForm, QuestionForm, \
+    subject_name, type_description
 from questionaire.models import User, Question
 
 
@@ -145,10 +146,15 @@ def account():
 def questions():
     pg = request.args.get('page', 1, type=int)
     question_page = Question.query.paginate(per_page=5, page=pg)
-    question_list = [{'q': i.q, 'points': i.points, 'a': i.answer, 'type': i.type, 'memo': i.memo, 'id': i.id} for i in question_page.items]
+    question_list = [{'q': i.q,
+                      'points': i.points,
+                      'answer': i.answer,
+                      'type': type_description(i.type),
+                      'memo': i.memo,
+                      'id': i.id,
+                      'subject': subject_name(i.subject),
+                      'nr': n+1+(pg-1)*question_page.per_page} for n, i in enumerate(question_page.items)]
 
-    for n, q in enumerate(question_list):
-        q.update({'nr': n+1+((pg-1)*question_page.per_page)})
     return render_template('questions.html', questions=question_list)
 
 

@@ -5,6 +5,7 @@
 # As an example we just have 3 hard-coded questions for now.
 import csv
 import json
+import os
 from random import randint
 
 
@@ -20,8 +21,12 @@ class Config:
 
     @classmethod
     def read_config(cls, filename):
-        with open(filename, 'rt') as configfile:
-            return json.loads(configfile.read())
+        try:
+            with open(filename, 'rt') as configfile:
+                return json.loads(configfile.read())
+        except Exception as e:
+            print('WARNING: Failed to load config file "%s".\nError: %s' % (filename, str(e)))
+            return {}
 
     @classmethod
     def get(cls, key, default=None):

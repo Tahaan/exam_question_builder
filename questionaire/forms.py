@@ -21,6 +21,20 @@ TYPE_LIST = [
     ('box', 'Picture Box')]
 
 
+def subject_name(subjid):
+    for x, name in SUBJECT_LIST:
+        if x == subjid:
+            return name
+    return "SUBJECT NAME NOT FOUND: %s" % subjid
+
+
+def type_description(typeid):
+    for x, name in TYPE_LIST:
+        if x == typeid:
+            return name
+    return "TYPE NAME NOT FOUND: %s" % typeid
+
+
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)],
                            description="Select a username")
