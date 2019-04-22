@@ -145,7 +145,7 @@ def account():
 @login_required
 def questions():
     pg = request.args.get('page', 1, type=int)
-    question_page = Question.query.paginate(per_page=5, page=pg)
+    question_page = Question.query.paginate(per_page=2, page=pg)
     question_list = [{'q': i.q,
                       'points': i.points,
                       'answer': i.answer,
@@ -155,7 +155,14 @@ def questions():
                       'subject': subject_name(i.subject),
                       'nr': n+1+(pg-1)*question_page.per_page} for n, i in enumerate(question_page.items)]
 
-    return render_template('questions.html', questions=question_list)
+    return render_template('questions.html',
+                           questions=question_list,
+                           pages=question_page.iter_pages(left_edge=1,
+                                                          right_edge=1,
+                                                          left_current=2,
+                                                          right_current=3),
+                           current_pagenr=pg
+                           )
 
 
 @app.route("/questions/<int:question_id>")
