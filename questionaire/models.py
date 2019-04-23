@@ -25,14 +25,19 @@ class User(db.Model, UserMixin):
     def get_reset_token(self, expires_seconds=1800):
         # s = TimedToken(app.secret_key, expires_seconds)
         s = TimedToken(app.config['SECRET_KEY'], expires_seconds)
-        return s.dumps({'user_id': self.id}).decode('UTF-8')
+        return s.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_reset_token(token):
-        s = TimedToken
+        s = TimedToken(app.secret_key)
         try:
-            user_id = s.loads(token)['user_id']
-        except:
+            token_verify = s.loads(token)
+            user_id = token_verify.pop('user_id')
+        except Exception as e:
+            print(e)
+            print(e.__traceback__)
+            print(e.__cause__)
+            print(e.args)
             return None
         return User.query.get(user_id)
 

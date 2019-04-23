@@ -183,7 +183,7 @@ def questions():
 
 
 @app.route("/questions/<int:question_id>")
-def question(question_id):
+def show_question(question_id):
     question = Question.query.get_or_404(question_id)
     return render_template('question.html', question=question, title="Question " + str(question.id))
 
@@ -193,7 +193,7 @@ def question(question_id):
 def new_questionaire():
     form = QuestionaireForm()
     if form.validate_on_submit():
-        return redirect(url_for('questions'))
+        return redirect(url_for('list_questions'))
     elif request.method == 'POST':
         flash('Check Values', 'danger')
     return render_template('questionaire_form.html', form=form)
@@ -237,7 +237,7 @@ def update_question(question_id):
 
         db.session.commit()
         flash('Question updated', 'success')
-        return redirect(url_for('questions'))
+        return redirect(url_for('list_questions'))
     elif request.method == 'GET':
         form.q.data = question.q
         form.points.data = question.points
@@ -256,7 +256,7 @@ def delete_question(question_id):
     db.session.delete(question)
     db.session.commit()
     flash('Question deleted', 'success')
-    return redirect(url_for('questions'))
+    return redirect(url_for('list_questions'))
 
 
 def send_reset_email(user):
@@ -304,5 +304,3 @@ def reset_token(token):
         return redirect(url_for('login'))
 
     return render_template('reset_password.html', title='Reset password', form=form)
-
-
