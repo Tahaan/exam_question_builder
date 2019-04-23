@@ -48,7 +48,7 @@ def new_question():
                             subject=form.subject.data)
         db.session.add(question)
         db.session.commit()
-        return redirect(url_for('users.home'))
+        return redirect(url_for('main.home'))
     elif request.method == 'POST':
         flash('Check Values', 'danger')
     return render_template('create_question.html', title="Add Question", form=form, legend="New Question")

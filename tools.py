@@ -13,11 +13,11 @@ DEFAULT_CONFIG_FILE = 'webservice.conf'
 
 
 # Singleton Class holding application config
-class Config:
+class ConfigManager:
     _conf = {}
 
     def __init__(self, filename):
-        Config._conf = self.read_config(filename)
+        ConfigManager._conf = self.read_config(filename)
 
     @classmethod
     def read_config(cls, filename):
