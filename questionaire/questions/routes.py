@@ -48,7 +48,7 @@ def new_question():
                             subject=form.subject.data)
         db.session.add(question)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('users.home'))
     elif request.method == 'POST':
         flash('Check Values', 'danger')
     return render_template('create_question.html', title="Add Question", form=form, legend="New Question")
@@ -71,7 +71,7 @@ def update_question(question_id):
 
         db.session.commit()
         flash('Question updated', 'success')
-        return redirect(url_for('list_questions'))
+        return redirect(url_for('questions.list_questions'))
     elif request.method == 'GET':
         form.q.data = question.q
         form.points.data = question.points
@@ -90,7 +90,7 @@ def delete_question(question_id):
     db.session.delete(question)
     db.session.commit()
     flash('Question deleted', 'success')
-    return redirect(url_for('list_questions'))
+    return redirect(url_for('questions.list_questions'))
 
 
 @qs.route("/questionaire", methods=['GET', 'POST'])
@@ -98,7 +98,7 @@ def delete_question(question_id):
 def new_questionaire():
     form = QuestionaireForm()
     if form.validate_on_submit():
-        return redirect(url_for('list_questions'))
+        return redirect(url_for('questions.list_questions'))
     elif request.method == 'POST':
         flash('Check Values', 'danger')
     return render_template('questionaire_form.html', form=form)

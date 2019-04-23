@@ -30,6 +30,6 @@ To reset your password, visit the following link:
 {reset_link}
 
 If you did not make this request you can safely ignore this message
-'''.format(reset_link=url_for('reset_token', token=token, _external=True))
+'''.format(reset_link=url_for('users.reset_token', token=token, _external=True))
 
     mail.send(msg)

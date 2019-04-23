@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 loginmanager = LoginManager(app)
-loginmanager.login_view = 'login'
+loginmanager.login_view = 'users.login'
 loginmanager.login_message_category = 'info'
 
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
@@ -24,3 +24,11 @@ app.config['MAIL_USE_TLS'] = 'True'
 app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
 app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
 mail = Mail(app)
+
+from questionaire.users.routes import users
+from questionaire.questions.routes import qs
+from questionaire.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(qs)
+app.register_blueprint(main)

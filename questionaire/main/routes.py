@@ -24,14 +24,14 @@ def maintenance():
 def wipe_database():
     db.drop_all()
     flash('Database Destroyed - add a new user now', 'danger')
-    return redirect(url_for('maintenance'))
+    return redirect(url_for('main.maintenance'))
 
 
 @main.route("/maintenance/new")
 def create_database():
     db.create_all()
     flash('New Database created', 'info')
-    return redirect(url_for('maintenance'))
+    return redirect(url_for('main.maintenance'))
 
 
 @main.route("/about")
@@ -41,4 +41,4 @@ def about():
 
 @main.route("/users/list", methods=['GET', 'POST'])
 def user_list():
-    return redirect(url_for('other'))
+    return redirect(url_for('main.other'))
