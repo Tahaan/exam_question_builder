@@ -72,4 +72,3 @@ class Subject(db.Model):
 
     def __repr__(self):
         return 'Subject("{id}", "{name}")'.format(id=self.id, name=self.name)
-

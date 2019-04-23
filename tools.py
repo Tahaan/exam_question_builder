@@ -136,7 +136,7 @@ def prompt_questionaire_data() -> dict:
         if instr_line == '.':
             break
         instr_list.append(instr_line)
-    instr ='<br>\n'.join(instr_list)
+    instr = '<br>\n'.join(instr_list)
 
     return {"time": time,
             "instr": instr,
