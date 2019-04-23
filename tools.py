@@ -17,7 +17,14 @@ class ConfigManager:
     _conf = {}
 
     def __init__(self, filename):
-        ConfigManager._conf = self.read_config(filename)
+        if not ConfigManager._conf:
+            ConfigManager._conf = self.read_config(filename)
+            for k, v in ConfigManager._conf.items():
+                self.set_property(k, v)
+
+    @classmethod
+    def set_property(cls, propertyname, value):
+        cls.propertyname = value
 
     @classmethod
     def read_config(cls, filename):
@@ -32,6 +39,8 @@ class ConfigManager:
     def get(cls, key, default=None):
         return cls._conf.get(key, default)
 
+
+c = ConfigManager(DEFAULT_CONFIG_FILE)
 
 def parse_question_fields(question_row) -> dict:
     q_type = question_row[0]
