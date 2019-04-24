@@ -11,3 +11,6 @@ class Config:
 
     MAIL_USERNAME = os.environ.get('EMAIL_USER')
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
+    DEBUG = True
+    HTTP_PORT = 5000

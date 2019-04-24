@@ -12,50 +12,58 @@ from random import randint
 DEFAULT_CONFIG_FILE = 'webservice.conf'
 
 
-# Singleton Class holding application config
-class ConfigManager:
-    SECRET_KEY = 'd31b4f37bf2b1a8be9f93107c1d27ad083e92b4ed6416866b5487be73765a2b5'
-
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = '587'
-    MAIL_USE_TLS = 'True'
-
-    MAIL_USERNAME = os.environ.get('EMAIL_USER')
-    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
-
-    _conf = {}
-
-    def __init__(self, filename=None):
-        if not ConfigManager._conf:
-            if filename is None:
-                filename - DEFAULT_CONFIG_FILE
-            ConfigManager._conf = self.read_config(filename)
-            for k, v in ConfigManager._conf.items():
-                self.set_property(k, v)
-                print('Config Update: %s = %s' % (k, v))
-
-    @classmethod
-    def set_property(cls, propertyname, value):
-        cls.propertyname = value
-
-    @classmethod
-    def read_config(cls, filename):
-        try:
-            with open(filename, 'rt') as configfile:
-                return json.loads(configfile.read())
-        except Exception as e:
-            print('WARNING: Failed to load config file "%s".\nError: %s' % (filename, str(e)))
-            return {}
-
-    @classmethod
-    def get(cls, key, default=None):
-        v = cls._conf.get(key, default)
-        print('Class retrieving value for %s: %s' % (key, v))
-        return v
-
-    def __getitem__(self, item):
-        print('Item Getter')
-        return ConfigManager.get(item)
+# # Singleton Class holding application config
+# class ConfigManager:
+#     SECRET_KEY = 'd31b4f37bf2b1a8be9f93107c1d27ad083e92b4ed6416866b5487be73765a2b5'
+#     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+#
+#     MAIL_SERVER = 'smtp.googlemail.com'
+#     MAIL_PORT = '587'
+#     MAIL_USE_TLS = 'True'
+#     # SECRET_KEY = None
+#     # SQLALCHEMY_DATABASE_URI = None
+#     #
+#     # MAIL_SERVER = None
+#     # MAIL_PORT = None
+#     # MAIL_USE_TLS = None
+#
+#     MAIL_USERNAME = os.environ.get('EMAIL_USER')
+#     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+#
+#     _conf = {}
+#
+#     def __init__(self, filename=None):
+#         if not ConfigManager._conf:
+#             if filename is None:
+#                 filename - DEFAULT_CONFIG_FILE
+#             ConfigManager._conf = self.read_config(filename)
+#             for k, v in ConfigManager._conf.items():
+#                 self.set_property(k, v)
+#                 print('Config Update: %s = %s' % (k, v))
+#
+#     @classmethod
+#     def set_property(cls, propertyname, value):
+#         print('Class Property updated: %s -> %s' % (propertyname, value))
+#         cls.propertyname = value
+#
+#     @classmethod
+#     def read_config(cls, filename):
+#         try:
+#             with open(filename, 'rt') as configfile:
+#                 return json.loads(configfile.read())
+#         except Exception as e:
+#             print('WARNING: Failed to load config file "%s".\nError: %s' % (filename, str(e)))
+#             return {}
+#
+#     @classmethod
+#     def get(cls, key, default=None):
+#         v = cls._conf.get(key, default)
+#         print('Class retrieving value for %s: %s' % (key, v))
+#         return v
+#
+#     def __getitem__(self, item):
+#         print('Item Getter')
+#         return ConfigManager.get(item)
 
 
 def parse_question_fields(question_row) -> dict:

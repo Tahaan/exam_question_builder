@@ -7,7 +7,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 
 # from config import Config
-from tools import ConfigManager
+# from tools import ConfigManager
 
 
 db = SQLAlchemy()
