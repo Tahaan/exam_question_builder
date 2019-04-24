@@ -21,6 +21,7 @@ class ConfigManager:
             ConfigManager._conf = self.read_config(filename)
             for k, v in ConfigManager._conf.items():
                 self.set_property(k, v)
+                print('Config Update: %s = %s' % (k, v))
 
     @classmethod
     def set_property(cls, propertyname, value):

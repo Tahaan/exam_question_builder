@@ -2,16 +2,16 @@ import os
 import uuid
 
 from PIL import Image
-from flask import url_for
+from flask import url_for, current_app
 from flask_mail import Message
 
-from questionaire import mail, app
+from questionaire import mail
 
 
 def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = str(uuid.uuid4()) + f_ext
-    picture_path = os.path.join(app.root_path, 'static', 'profile_pics', picture_fn)
+    picture_path = os.path.join(current_app.root_path, 'static', 'profile_pics', picture_fn)
 
     output_size = (125, 125)
     i = Image.open(form_picture)
