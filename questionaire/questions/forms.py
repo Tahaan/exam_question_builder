@@ -1,19 +1,29 @@
+from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SelectField, IntegerField, DecimalField, StringField, SubmitField, FieldList
 from wtforms.validators import DataRequired, Length, Optional
 
-from questionaire.questions.utils import SUBJECT_LIST, TYPE_LIST
+from questionaire.models import Subject
+from questionaire.questions.utils import TYPE_LIST
 
 # class MCOptionForm(FlaskForm):
 #     option = StringField('Option', validators=[DataRequired(), Length(max=200)])
 
+
+def selector_list(app, table):
+    with app.app_context():
+        items = table.query.orderby(table.name).all()
+        return [(i.id, i.name) for i in items]
+
+
 class QuestionForm(FlaskForm):
+    subject_list = []
     q = TextAreaField('Question', validators=[DataRequired(), Length(max=200)], default="")
     subject = SelectField('Subject', validators=[DataRequired()],
-                          choices=SUBJECT_LIST)
+                          choices=subject_list)
+    points = IntegerField('Points', validators=[], default=1)
     type = SelectField('Type', validators=[DataRequired()],
                        choices=TYPE_LIST)
-    points = IntegerField('Points', validators=[], default=1)
     boxw = IntegerField('Box Width', validators=[], default=500)
     boxh = IntegerField('Box Height', validators=[], default=500)
     memo = TextAreaField('Memo', validators=[DataRequired()], default="")
@@ -31,7 +41,8 @@ class QuestionaireForm(FlaskForm):
                        description="Time available",
                        default="100 minutes")
     nr_of_questions = IntegerField('Number of Questions', validators=[])
+    subject_list = []
     subject = SelectField('Subject', validators=[DataRequired()],
-                          choices=SUBJECT_LIST)
+                          choices=subject_list),
     instr = TextAreaField('Instructions', description="Write out the questionaire instructions")
     submit = SubmitField('Submit')

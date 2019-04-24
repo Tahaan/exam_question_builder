@@ -2,24 +2,13 @@ import json
 
 from flask import render_template
 
-SUBJECT_LIST = [
-    ('1', 'Robotics'),
-    ('4', 'Electronics'),
-    ('3', 'Mechanics'),
-    ('2', 'Programming')]
+from questionaire.subjects.utils import subject_name
 
 TYPE_LIST = [
     ('entry', 'Simple Input'),
     ('int', 'Integer Number'),
     ('multi', 'Multiple Choice'),
     ('box', 'Picture Box')]
-
-
-def subject_name(subjid):
-    for x, name in SUBJECT_LIST:
-        if x == subjid:
-            return name
-    return "SUBJECT NAME NOT FOUND: %s" % subjid
 
 
 def type_description(typeid):
