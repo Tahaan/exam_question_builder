@@ -61,8 +61,8 @@ class Question(db.Model):
     points = db.Column(db.Integer(), nullable=False, default=datetime.utcnow)
     type = db.Column(db.String(50), nullable=False)
     answer = db.Column(db.Text(), nullable=False)
-    subject = db.Column(db.Text(), nullable=False)
     memo = db.Column(db.Text(), nullable=False)
+    subj_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)
 
     def __repr__(self):
         return 'Question("{q}", "{points}", "{type}")'.format(q=self.q, points=self.points, type=self.type)
