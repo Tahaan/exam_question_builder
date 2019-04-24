@@ -51,6 +51,9 @@ class ConfigManager:
     def get(cls, key, default=None):
         return cls._conf.get(key, default)
 
+    def __getitem__(self, item):
+        return ConfigManager.get(item)
+
 
 def parse_question_fields(question_row) -> dict:
     q_type = question_row[0]
