@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
 
 from questionaire import db
-from questionaire.models import Question
+from questionaire.models import Question, Subject
 from questionaire.questions.forms import QuestionForm, QuestionaireForm
 from questionaire.questions.utils import show_questionlist, parse_question_options
 
@@ -37,6 +37,8 @@ def show_question(question_id):
 @login_required
 def new_question():
     form = QuestionForm()
+    subj_list = [(s.id, s.name) for s in Subject.query.order_by(Subject.name.desc()).all()]
+    form.subject_list[0:] = subj_list
     if form.validate_on_submit():
         flash('Your question has been added', 'success')
         question_info = parse_question_options(form.optionlist.data, form.boxh.data, form.boxw.data)
@@ -61,6 +63,8 @@ def update_question(question_id):
     # if question.author != current_user:
     #     abort(403)
     form = QuestionForm()
+    subj_list = [(s.id, s.name) for s in Subject.query.order_by(Subject.name.desc()).all()]
+    form.subject_list[0:] = subj_list
     if form.validate_on_submit():
         question.answer = parse_question_options(form.optionlist.data, form.boxh.data, form.boxw.data)
         question.memo = form.memo.data
@@ -97,6 +101,8 @@ def delete_question(question_id):
 @login_required
 def new_questionaire():
     form = QuestionaireForm()
+    subj_list = [(s.id, s.name) for s in Subject.query.order_by(Subject.name.desc()).all()]
+    form.subject_list[0:] = subj_list
     if form.validate_on_submit():
         return redirect(url_for('questions.list_questions'))
     elif request.method == 'POST':

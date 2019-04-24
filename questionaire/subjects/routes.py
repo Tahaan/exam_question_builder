@@ -4,7 +4,7 @@ from flask_login import login_required
 from questionaire import db
 from questionaire.models import Subject
 
-from subjects.forms import SubjectForm
+from questionaire.subjects.forms import SubjectForm
 
 subj = Blueprint('subjects', __name__)
 
@@ -13,9 +13,9 @@ subj = Blueprint('subjects', __name__)
 @login_required
 def list_subjects():
     pg = request.args.get('page', 1, type=int)
-    subject_page = Subject.query.order_by(Subject.subject.desc()).paginate(per_page=5, page=pg)
-    return show_subject_list(subject_page, pg)
-
+    subject_page = Subject.query.order_by(Subject.name.desc()).paginate(per_page=5, page=pg)
+    # return show_subject_list(subject_page, pg)
+    return render_template('subject_list.html', subjects_page=subject_page.items)
 
 @subj.route("/subjects/<int:subj_id>")
 def show_subject(subj_id):
@@ -32,15 +32,15 @@ def new_subject():
         subject = Subject(name=form.name.data)
         db.session.add(subject)
         db.session.commit()
-        return redirect(url_for('main.home'))
+        return redirect(url_for('subjects.list_subjects'))
     elif request.method == 'POST':
         flash('Check Values', 'danger')
-    return render_template('create_subject.html', title="Add Subject", form=form, legend="New Subject")
+    return render_template('subject_edit.html', title="Add Subject", form=form, legend="New Subject")
 
 
 @subj.route("/subjects/<int:subj_id>/update", methods=['GET', 'POST'])
 @login_required
-def update_subject(subj_id):
+def edit_subject(subj_id):
     subject = Subject.query.get_or_404(subj_id)
     form = SubjectForm()
     if form.validate_on_submit():
@@ -52,7 +52,7 @@ def update_subject(subj_id):
     elif request.method == 'GET':
         form.name.data = subject.name
 
-    return render_template('create_subject.html', title="Update Subject", form=form, legend="Update Subject")
+    return render_template('subject_edit.html', title="Update Subject", form=form, legend="Update Subject")
 
 
 @subj.route("/subjects/<int:subj_id>/delete", methods=['POST'])

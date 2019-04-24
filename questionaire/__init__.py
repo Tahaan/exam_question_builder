@@ -24,11 +24,13 @@ def create_app(config):
     from questionaire.users.routes import users
     from questionaire.questions.routes import qs
     from questionaire.main.routes import main
+    from questionaire.subjects.routes import subj
     from questionaire.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(qs)
     app.register_blueprint(main)
+    app.register_blueprint(subj)
     app.register_blueprint(errors)
 
     return app
