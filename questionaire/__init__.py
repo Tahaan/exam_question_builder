@@ -1,11 +1,10 @@
-import os
-
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
 
+from config import Config
 from tools import ConfigManager
 
 
@@ -20,7 +19,7 @@ mail = Mail()
 
 def create_app(config_class=ConfigManager):
     app = Flask(__name__)
-    app.config.from_object(ConfigManager)
+    app.config.from_object(config_class)
 
     db.init_app(app)
     bcrypt.init_app(app)

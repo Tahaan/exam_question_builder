@@ -14,9 +14,18 @@ DEFAULT_CONFIG_FILE = 'webservice.conf'
 
 # Singleton Class holding application config
 class ConfigManager:
+    SECRET_KEY = 'd31b4f37bf2b1a8be9f93107c1d27ad083e92b4ed6416866b5487be73765a2b5'
+
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = '587'
+    MAIL_USE_TLS = 'True'
+
+    MAIL_USERNAME = os.environ.get('EMAIL_USER')
+    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
     _conf = {}
 
-    def __init__(self, filename):
+    def __init__(self, filename=None):
         if not ConfigManager._conf:
             ConfigManager._conf = self.read_config(filename)
             for k, v in ConfigManager._conf.items():
@@ -42,6 +51,7 @@ class ConfigManager:
 
 
 c = ConfigManager(DEFAULT_CONFIG_FILE)
+
 
 def parse_question_fields(question_row) -> dict:
     q_type = question_row[0]

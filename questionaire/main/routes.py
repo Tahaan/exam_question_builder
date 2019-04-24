@@ -37,8 +37,3 @@ def create_database():
 @main.route("/about")
 def about():
     return render_template('about.html')
-
-
-@main.route("/users/list", methods=['GET', 'POST'])
-def user_list():
-    return redirect(url_for('main.other'))

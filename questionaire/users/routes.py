@@ -108,3 +108,8 @@ def reset_token(token):
         return redirect(url_for('users.login'))
 
     return render_template('reset_password.html', title='Reset password', form=form)
+
+
+@users.route("/users/list", methods=['GET', 'POST'])
+def user_list():
+    return redirect(url_for('main.other'))
