@@ -49,9 +49,12 @@ class ConfigManager:
 
     @classmethod
     def get(cls, key, default=None):
-        return cls._conf.get(key, default)
+        v = cls._conf.get(key, default)
+        print('Class retrieving value for %s: %s' % (key, v))
+        return v
 
     def __getitem__(self, item):
+        print('Item Getter')
         return ConfigManager.get(item)
 
 
