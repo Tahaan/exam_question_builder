@@ -27,6 +27,8 @@ class ConfigManager:
 
     def __init__(self, filename=None):
         if not ConfigManager._conf:
+            if filename is None:
+                filename - DEFAULT_CONFIG_FILE
             ConfigManager._conf = self.read_config(filename)
             for k, v in ConfigManager._conf.items():
                 self.set_property(k, v)
@@ -48,9 +50,6 @@ class ConfigManager:
     @classmethod
     def get(cls, key, default=None):
         return cls._conf.get(key, default)
-
-
-c = ConfigManager(DEFAULT_CONFIG_FILE)
 
 
 def parse_question_fields(question_row) -> dict:
