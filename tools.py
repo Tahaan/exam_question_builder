@@ -4,29 +4,13 @@
 
 # As an example we just have 3 hard-coded questions for now.
 import csv
-import json
-import os
 from random import randint
-
 
 DEFAULT_CONFIG_FILE = 'webservice.conf'
 
 
 # # Singleton Class holding application config
 # class ConfigManager:
-#     SECRET_KEY = 'd31b4f37bf2b1a8be9f93107c1d27ad083e92b4ed6416866b5487be73765a2b5'
-#     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
-#
-#     MAIL_SERVER = 'smtp.googlemail.com'
-#     MAIL_PORT = '587'
-#     MAIL_USE_TLS = 'True'
-#     # SECRET_KEY = None
-#     # SQLALCHEMY_DATABASE_URI = None
-#     #
-#     # MAIL_SERVER = None
-#     # MAIL_PORT = None
-#     # MAIL_USE_TLS = None
-#
 #     MAIL_USERNAME = os.environ.get('EMAIL_USER')
 #     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
 #
@@ -35,7 +19,7 @@ DEFAULT_CONFIG_FILE = 'webservice.conf'
 #     def __init__(self, filename=None):
 #         if not ConfigManager._conf:
 #             if filename is None:
-#                 filename - DEFAULT_CONFIG_FILE
+#                 filename = DEFAULT_CONFIG_FILE
 #             ConfigManager._conf = self.read_config(filename)
 #             for k, v in ConfigManager._conf.items():
 #                 self.set_property(k, v)
@@ -60,6 +44,10 @@ DEFAULT_CONFIG_FILE = 'webservice.conf'
 #         v = cls._conf.get(key, default)
 #         print('Class retrieving value for %s: %s' % (key, v))
 #         return v
+#
+#     @classmethod
+#     def config_dict(cls):
+#         return dict(cls._conf)
 #
 #     def __getitem__(self, item):
 #         print('Item Getter')
@@ -134,7 +122,7 @@ def pick_n_from_list(n, list_len, sorted=False) -> list:
         raise ValueError("Impossible to select %d items from a list of %d questions" % (n, list_len))
     picked = []
     while len(picked) < n:
-        p = randint(0, list_len-1)
+        p = randint(0, list_len - 1)
         if p not in picked:
             picked.append(p)
     if sorted:

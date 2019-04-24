@@ -4,6 +4,8 @@ from wtforms.validators import DataRequired, Length, Optional
 
 from questionaire.questions.utils import SUBJECT_LIST, TYPE_LIST
 
+# class MCOptionForm(FlaskForm):
+#     option = StringField('Option', validators=[DataRequired(), Length(max=200)])
 
 class QuestionForm(FlaskForm):
     q = TextAreaField('Question', validators=[DataRequired(), Length(max=200)], default="")
@@ -17,7 +19,7 @@ class QuestionForm(FlaskForm):
     memo = TextAreaField('Memo', validators=[DataRequired()], default="")
     numeric = DecimalField('Value', validators=[Optional()])
     answer = StringField('Answer', validators=[Length(max=200)])
-    optionlist = FieldList(StringField('Option', validators=[DataRequired(), Length(max=200)]))
+    optionlist = FieldList(StringField('Option', validators=[DataRequired(), Length(max=200)]), min_entries=3)
     submit = SubmitField('Save')
 
 
