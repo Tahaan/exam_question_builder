@@ -35,8 +35,8 @@ def show_questionlist(question_page, pg, subj=None):
                       'type': type_description(i.type),
                       'memo': i.memo,
                       'id': i.id,
-                      'subject': subject_name(i.subject),
-                      'subj_id': i.subject,
+                      'subject_name': subject_name(i.subj_id),
+                      'subj_id': i.subj_id,
                       'nr': n + 1 + (pg - 1) * question_page.per_page} for n, i in enumerate(question_page.items)]
 
     return render_template('questions.html',

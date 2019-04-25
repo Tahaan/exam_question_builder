@@ -14,7 +14,7 @@ qs = Blueprint('questions', __name__)
 def subj_questions(subj):
     pg = request.args.get('page', 1, type=int)
 
-    question_page = Question.query.filter_by(subject=subj).order_by(Question.id.desc()). \
+    question_page = Question.query.filter_by(subj_id=subj).order_by(Question.id.desc()). \
         paginate(per_page=5, page=pg)
     return show_questionlist(question_page, pg, subj)
 
@@ -23,7 +23,7 @@ def subj_questions(subj):
 @login_required
 def list_questions():
     pg = request.args.get('page', 1, type=int)
-    question_page = Question.query.order_by(Question.subject.desc()).paginate(per_page=5, page=pg)
+    question_page = Question.query.order_by(Question.id.asc()).paginate(per_page=5, page=pg)
     return show_questionlist(question_page, pg)
 
 
@@ -38,7 +38,11 @@ def show_question(question_id):
 def new_question():
     form = QuestionForm()
     subj_list = [(s.id, s.name) for s in Subject.query.order_by(Subject.name.desc()).all()]
+    print('Subjects available for Question')
+    for s in subj_list:
+        print(s)
     form.subject_list[0:] = subj_list
+    form.subj_id.choices = subj_list
     if form.validate_on_submit():
         flash('Your question has been added', 'success')
         question_info = parse_question_options(form.optionlist.data, form.boxh.data, form.boxw.data)
@@ -47,7 +51,7 @@ def new_question():
                             memo=form.memo.data,
                             type=form.type.data,
                             answer=question_info,
-                            subject=form.subject.data)
+                            subj_id=form.subj_id.data)
         db.session.add(question)
         db.session.commit()
         return redirect(url_for('main.home'))
@@ -64,6 +68,9 @@ def update_question(question_id):
     #     abort(403)
     form = QuestionForm()
     subj_list = [(s.id, s.name) for s in Subject.query.order_by(Subject.name.desc()).all()]
+    print('Subjects available for Question')
+    for s in subj_list:
+        print(s)
     form.subject_list[0:] = subj_list
     if form.validate_on_submit():
         question.answer = parse_question_options(form.optionlist.data, form.boxh.data, form.boxw.data)
@@ -71,7 +78,7 @@ def update_question(question_id):
         question.q = form.q.data
         question.points = form.points.data
         question.type = form.type.data
-        question.subject = form.subject.data
+        question.subj_id = form.subj_id.data
 
         db.session.commit()
         flash('Question updated', 'success')
@@ -81,7 +88,8 @@ def update_question(question_id):
         form.points.data = question.points
         form.type.data = question.type
         form.memo.data = question.memo
-        form.subject.data = question.subject
+        form.subj_id.data = question.subj_id
+        form.subj_id.choices = subj_list
         form.answer.data = question.answer
 
     return render_template('create_question.html', title="Update Question", form=form, legend="Update Question")

@@ -19,8 +19,8 @@ def selector_list(app, table):
 class QuestionForm(FlaskForm):
     subject_list = []
     q = TextAreaField('Question', validators=[DataRequired(), Length(max=200)], default="")
-    subject = SelectField('Subject', validators=[DataRequired()],
-                          choices=subject_list)
+    subj_id = SelectField('Subject', validators=[DataRequired()],
+                          choices=subject_list, coerce=int)
     points = IntegerField('Points', validators=[], default=1)
     type = SelectField('Type', validators=[DataRequired()],
                        choices=TYPE_LIST)
@@ -29,7 +29,7 @@ class QuestionForm(FlaskForm):
     memo = TextAreaField('Memo', validators=[DataRequired()], default="")
     numeric = DecimalField('Value', validators=[Optional()])
     answer = StringField('Answer', validators=[Length(max=200)])
-    optionlist = FieldList(StringField('Option', validators=[DataRequired(), Length(max=200)]), min_entries=3)
+    optionlist = FieldList(StringField('Option', validators=[Optional(), Length(max=200)]), min_entries=3)
     submit = SubmitField('Save')
 
 
@@ -42,7 +42,7 @@ class QuestionaireForm(FlaskForm):
                        default="100 minutes")
     nr_of_questions = IntegerField('Number of Questions', validators=[])
     subject_list = []
-    subject = SelectField('Subject', validators=[DataRequired()],
-                          choices=subject_list),
+    subj_id = SelectField('Subject', validators=[DataRequired()],
+                          choices=subject_list, coerce=int),
     instr = TextAreaField('Instructions', description="Write out the questionaire instructions")
     submit = SubmitField('Submit')
